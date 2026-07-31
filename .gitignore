@@ -42,7 +42,8 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
-# AI Instructions
+
+# AI Instructions and Configs
 .claude/
 .gemini/
 .github/
