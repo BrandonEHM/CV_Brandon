@@ -49,3 +49,5 @@ Thumbs.db
 .github/
 .cursor/
 .vscode/
+# Excluir archivo de información local
+README.md
