@@ -1,0 +1,127 @@
+<div class="relative w-full aspect-video overflow-hidden bg-gray-200 dark:bg-gray-950 group">
+
+  @for (item of items(); track item.src; let i = $index) {
+  <div
+    [class]="'absolute inset-0 transition-opacity duration-700 ' + (i === current() ? 'opacity-100' : 'opacity-0 pointer-events-none')">
+    @switch (item.type) {
+    @case ('image') {
+    <img [src]="item.src" [alt]="item.alt ?? alt()" class="w-full h-full object-cover">
+
+    @if (item.slide) {
+    <div class="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2">
+      @if (item.slide.titulo) {
+      <h3 class="text-sm font-semibold">{{ item.slide.titulo }}</h3>
+      }
+      @if (item.slide.descripcion) {
+      <p class="text-xs">{{ item.slide.descripcion }}</p>
+      }
+    </div>
+    }
+
+    }
+    <!-- video, carrusel principal -->
+    @case ('video') {
+    <video [id]="videoId(i)" [poster]="item.poster" controls (loadedmetadata)="setDefaultVolume($event)"
+      class="w-full h-full object-contain bg-black">
+      <source [src]="item.src">
+      Tu navegador no soporta la reproducción de video.
+    </video>
+    }
+    <!-- youtube, carrusel principal -->
+    @case ('youtube') {
+    <iframe [id]="youtubeId(item.src, i)" [src]="safeUrl(item.src)" class="w-full h-full bg-black"
+      title="Video de YouTube"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>
+    }
+    @case ('pdf') {
+    <iframe [src]="safeUrl(item.src)" class="w-full h-full bg-white" title="Documento PDF"></iframe>
+    }
+    }
+  </div>
+  }
+
+  <!-- Botón de zoom -->
+  <button type="button" (click)="openLightbox()" aria-label="Ampliar"
+    class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+      class="w-4 h-4">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M21 21l-5.2-5.2m0 0a7.5 7.5 0 1 0-10.6 0 7.5 7.5 0 0 0 10.6 0ZM10.5 7.5v6m-3-3h6" />
+    </svg>
+  </button>
+
+  @if (hasMultiple()) {
+  <button type="button" (click)="prev()" aria-label="Anterior"
+    class="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/30 hover:bg-black/55 text-white flex items-center justify-center transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"
+      class="w-3.5 h-3.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+
+  <button type="button" (click)="next()" aria-label="Siguiente"
+    class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black/30 hover:bg-black/55 text-white flex items-center justify-center transition-colors">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="currentColor"
+      class="w-3.5 h-3.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+
+  <div class="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 z-10">
+    @for (item of items(); track item.src; let i = $index) {
+    <button type="button" (click)="goTo(i)" [attr.aria-label]="'Ir al elemento ' + (i + 1)"
+      [class]="'w-6 h-1 rounded-full ' + (i === current() ? 'bg-white' : 'bg-white/40')">
+    </button>
+    }
+  </div>
+  }
+</div>
+
+<!-- Lightbox -->
+@if (lightboxOpen()) {
+<div class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 md:p-10" (click)="closeLightbox()">
+
+  <button type="button" (click)="closeLightbox()" aria-label="Cerrar"
+    class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-2xl leading-none">
+    ×
+  </button>
+
+  <div class="relative max-w-5xl w-full max-h-full overflow-auto" (click)="$event.stopPropagation()">
+    @switch (activeItem().type) {
+    @case ('image') {
+    <img [src]="activeItem().src" [alt]="alt()" [style.transform]="'scale(' + zoom() + ')'"
+      class="mx-auto transition-transform duration-200 origin-center max-w-full">
+    }
+    @case ('video') {
+    <!-- lightbox -->
+    <video [poster]="activeItem().poster" controls autoplay (loadedmetadata)="setDefaultVolume($event)"
+      class="w-full max-h-[80vh] bg-black">
+      <source [src]="activeItem().src">
+    </video>
+    }
+    <!-- lightbox -->
+    @case ('youtube') {
+    <iframe [id]="youtubeIdLightbox()" [src]="safeUrl(activeItem().src)"
+      class="w-full aspect-video max-h-[80vh] bg-black" title="Video de YouTube"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>
+    }
+    @case ('pdf') {
+    <iframe [src]="safeUrl(activeItem().src)" class="w-full h-[80vh] bg-white" title="Documento PDF"></iframe>
+    }
+    }
+  </div>
+
+  @if (activeItem().type === 'image') {
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/10 rounded-full px-2 py-1.5"
+    (click)="$event.stopPropagation()">
+    <button type="button" (click)="zoomOut()" aria-label="Alejar"
+      class="w-8 h-8 rounded-full hover:bg-white/15 text-white flex items-center justify-center text-lg">−</button>
+    <span class="text-white text-xs w-10 text-center">{{ zoomPercent() }}%</span>
+    <button type="button" (click)="zoomIn()" aria-label="Acercar"
+      class="w-8 h-8 rounded-full hover:bg-white/15 text-white flex items-center justify-center text-lg">+</button>
+  </div>
+  }
+</div>
+}
