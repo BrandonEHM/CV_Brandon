@@ -34,6 +34,12 @@ export const routes: Routes = [
         title: 'CV Brandon - experiencia laboral',
       },
 
+      {
+        path: 'proyectos-destacados',
+        loadComponent: () => import('./components/proyectos-destacados/proyectos-destacados').then(m => m.ProyectosDestacados),
+        title: 'CV Brandon - proyectos destacados',
+      },
+
 
       {
         path: '',

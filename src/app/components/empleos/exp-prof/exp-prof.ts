@@ -2,10 +2,11 @@ import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ExperienciaInterface } from '../../../interfaces/experiencia/experiencia.interface';
 import { ImageCarousel } from '../../shared/image-carousel/image-carousel';
+import { ProyectosDestacados } from '../../proyectos-destacados/proyectos-destacados';
 
 @Component({
   selector: 'app-exp-prof',
-  imports: [RouterLink, ImageCarousel],
+  imports: [RouterLink, ImageCarousel, ProyectosDestacados],
   templateUrl: './exp-prof.html',
   styleUrl: './exp-prof.css',
 })
