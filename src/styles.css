@@ -1,3 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-@import 'tailwindcss';
+
+@plugin "flowbite/plugin";
+
+@source "../node_modules/flowbite";
+@source "../node_modules/flowbite-datepicker";
+
+/*@variant dark (&:where(.dark, .dark *));*/
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-background-dark: oklch(18.02% 0.0325 266.62);
+    --color-background-light: oklch(86.71% 0.0106 247.95);
+
+    --color-primary-dark: oklch(27.8% 0.033 256.848); /* bg-gray-800 */
+    --color-secondary-dark: oklch(37.3% 0.034 259.733); /* bg-gray-700 */
+
+    --color-primary-light: oklch(87.2% 0.01 258.338); /* bg-gray-300 */
+    --color-secondary-light: oklch(96.7% 0.003 264.542); /* bg-gray-100 */
+    --color-thirdary-light: oklch(92.8% 0.006 264.531); /* bg-gray-200 */
+
+
+    /* FUENTE DE TEXTO */
+    --font-times: "Times New Roman", Times, serif;
+    --font-arial: Arial, Helvetica, sans-serif;
+    --font-calibri: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+}

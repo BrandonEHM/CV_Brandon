@@ -1,0 +1,11 @@
+<!-- src/app/components/shared/toast/toast.html -->
+@if (visible()) {
+  <div class="fixed top-4 right-4 z-50 flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-white"
+       [class.bg-green-600]="type() === 'success'"
+       [class.bg-red-600]="type() === 'error'"
+       [class.bg-blue-600]="type() === 'info'"
+       [class.bg-yellow-500]="type() === 'warning'">
+    <span>{{ message() }}</span>
+    <button (click)="closeToast.emit()" class="font-bold leading-none">×</button>
+  </div>
+}
