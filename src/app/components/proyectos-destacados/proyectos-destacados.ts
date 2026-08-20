@@ -1,10 +1,10 @@
 import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProyectoInterface } from '../../interfaces/proyecto/proyecto.interface';
-
+import { EduAprComIdio } from '../edu-apr-com-idio/edu-apr-com-idio';
 @Component({
   selector: 'app-proyectos-destacados',
-  imports: [RouterLink],
+  imports: [RouterLink, EduAprComIdio],
   templateUrl: './proyectos-destacados.html',
   styleUrl: './proyectos-destacados.css',
 })
