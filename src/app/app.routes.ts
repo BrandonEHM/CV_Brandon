@@ -47,9 +47,15 @@ export const routes: Routes = [
       },
 
       {
-        path: '',
+        path: 'Edu',
         loadComponent: () => import('./components/educacion/educacion').then(m => m.Educacion),
         title: 'CV Brandon - Educación',
+      },
+
+      {
+        path: 'Aprendiendo',
+        loadComponent: () => import('./components/aprendiendo/aprendiendo').then(m => m.Aprendiendo),
+        title: 'CV Brandon - Aprendiendo',
       },
 
 
