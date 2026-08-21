@@ -35,10 +35,23 @@ export const routes: Routes = [
       },
 
       {
-        path: 'proyectos-destacados',
+        path: 'Proyectos-destacados',
         loadComponent: () => import('./components/proyectos-destacados/proyectos-destacados').then(m => m.ProyectosDestacados),
         title: 'CV Brandon - proyectos destacados',
       },
+
+      {
+        path: 'Educación',
+        loadComponent: () => import('./components/edu-apr-com-idio/edu-apr-com-idio').then(m => m.EduAprComIdio),
+        title: 'CV Brandon - Educación',
+      },
+
+      {
+        path: '',
+        loadComponent: () => import('./components/educacion/educacion').then(m => m.Educacion),
+        title: 'CV Brandon - Educación',
+      },
+
 
 
       {
